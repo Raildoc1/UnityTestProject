@@ -11,32 +11,44 @@ namespace TestGame.Enemy
         public int Health
         {
             get => _health;
-            set
+            private set
             {
                 var health = Mathf.Clamp(value, 0, _maxHealth);
                 if (_health != health)
                 {
-                    OnHealthChanged?.Invoke(_health, health);
+                    OnHealthChanged?.Invoke(health, _maxHealth);
                     _health = health;
                 }
 
                 if (_health <= 0)
                 {
-                    OnPlayerDie?.Invoke();
+                    Die();
                 }
             }
         }
 
-        public delegate void OnIntPropertyChangedEvent(int oldValue, int newValue);
+        public delegate void OnIntPropertyChangedEvent(int value, int maxHealth);
         public event OnIntPropertyChangedEvent OnHealthChanged;
 
-        public delegate void OnPlayerDieEvent();
-        public event OnPlayerDieEvent OnPlayerDie;
-
-        private void OnCollisionEnter(Collision collision)
+        private void Start()
         {
-            Debug.Log($"{collision}");
+            Health = _maxHealth;
         }
 
+        public void ApplyDamage(int damage)
+        {
+            if (damage < 0)
+            {
+                Debug.LogError("Damage can't be negative!");
+                return;
+            }
+
+            Health -= damage;
+        }
+
+        private void Die()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

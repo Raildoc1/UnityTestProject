@@ -4,15 +4,15 @@ namespace TestGame.Navigation
 {
     public class Waypath : MonoBehaviour
     {
-        private int _currentWaypointIndex = 2;
-        private Transform[] _waypoints;
+        private int _currentWaypointIndex = 1;
+        private Waypoint[] _waypoints;
 
         private void Awake()
         {
-            _waypoints = GetComponentsInChildren<Transform>();
+            _waypoints = GetComponentsInChildren<Waypoint>();
         }
 
-        public Transform GetCurrentWaypoint()
+        public Waypoint GetCurrentWaypoint()
         {
             return _waypoints[_currentWaypointIndex];
         }

@@ -15,6 +15,7 @@ namespace TestGame.FSM
         [Header("States")]
         [SerializeField] private FollowPathState _followPathState;
         [SerializeField] private IdleState _idleState;
+        [SerializeField] private ShootState _shootState;
 
         private void Awake()
         {
@@ -22,6 +23,7 @@ namespace TestGame.FSM
             transform.rotation = _startPoint.rotation;
             _followPathState.Initialize(this, transform);
             _idleState.Initialize(this, transform);
+            _shootState.Initialize(this, transform);
         }
 
         private void Start()
@@ -51,6 +53,7 @@ namespace TestGame.FSM
                     SetState(_followPathState);
                     break;
                 case StateType.Shoot:
+                    SetState(_shootState);
                     break;
                 default:
                     break;

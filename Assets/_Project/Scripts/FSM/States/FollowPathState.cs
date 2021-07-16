@@ -10,7 +10,7 @@ namespace TestGame.FSM
     {
         private Animator _animator;
         private NavMeshAgent _agent;
-        private Transform _target;
+        private Waypoint _target;
         private int _speedParamHash;
         private bool _finishedMove = false;
         private bool _finishedRotate = false;
@@ -49,9 +49,11 @@ namespace TestGame.FSM
         public override void Start()
         {
             _target = _path.GetCurrentWaypoint();
-            _agent.destination = _target.position;
+            _agent.destination = _target.transform.position;
             _agent.isStopped = false;
-        }
+            _finishedMove = false;
+            _finishedRotate = false;
+    }
 
         public override void Update()
         {
@@ -67,7 +69,7 @@ namespace TestGame.FSM
             {
                 _finishedMove = true;
                 _animator.SetFloat(_speedParamHash, 0f);
-                BehaviourFSM.StartCoroutine(RotateRoutine(_target.rotation));
+                BehaviourFSM.StartCoroutine(RotateRoutine(_target.transform.rotation));
             }
         }
 
