@@ -9,13 +9,17 @@ namespace TestGame.FSM
     {
         private Animator _animator;
         private int _combatParamHash;
+        private int _shootParamHash;
         private Waypoint _target;
-        private float _aimOffset = 10f;
+        private float _aimDistance = 100f;
 
         [SerializeField] private string _combatParamName = "InCombat";
+        [SerializeField] private string _shootParamName = "Shot";
         [SerializeField] private Transform _bulletSpawnPosition;
         [SerializeField] private Waypath _path;
+        [SerializeField] private LayerMask _shootLayers;
         [SerializeField] private KeyCode _shootKey = KeyCode.Mouse0;
+        [SerializeField] private float _aimOffset = 5f;
 
         public override StateType GetStateType()
         {
@@ -28,6 +32,7 @@ namespace TestGame.FSM
 
             _animator = owner.GetComponent<Animator>();
             _combatParamHash = Animator.StringToHash(_combatParamName);
+            _shootParamHash = Animator.StringToHash(_shootParamName);
 
             if (!_path)
             {
@@ -50,14 +55,28 @@ namespace TestGame.FSM
         {
             base.Update();
 
-            if (Input.GetKeyDown(_shootKey))
+            if (Input.GetKeyDown(_shootKey) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                Vector3 targetPosition = ray.origin + _aimOffset * ray.direction;
+
+                RaycastHit hit;
+                Vector3 targetPosition;
+
+                if (Physics.Raycast(ray.origin, ray.direction, out hit, _aimDistance, _shootLayers))
+                {
+                    targetPosition = hit.point;
+                    Debug.Log("hit");
+                }
+                else
+                {
+                    targetPosition = ray.origin + _aimOffset * ray.direction;
+                }
+
                 Vector3 direction = (targetPosition - _bulletSpawnPosition.position).normalized;
                 GameObject bulletObject = BulletsPool.Instance.GetBullet();
                 bulletObject.transform.position = _bulletSpawnPosition.position;
                 bulletObject.transform.forward = direction;
+                _animator.SetTrigger(_shootParamHash);
             }
         }
 

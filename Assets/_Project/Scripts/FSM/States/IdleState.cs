@@ -30,7 +30,7 @@ namespace TestGame.FSM
 
         public override void LogicUpdate()
         {
-            if (Input.GetKeyDown(_startWalkKey))
+            if (Input.GetKeyDown(_startWalkKey) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended))
             {
                 BehaviourFSM.SetState(StateType.FollowPath);
             }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace TestGame.Navigation
 {
@@ -21,6 +22,7 @@ namespace TestGame.Navigation
         {
             if (_currentWaypointIndex == _waypoints.Length - 1)
             {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 return false;
             }
 
