@@ -65,7 +65,6 @@ namespace TestGame.FSM
                 if (Physics.Raycast(ray.origin, ray.direction, out hit, _aimDistance, _shootLayers))
                 {
                     targetPosition = hit.point;
-                    Debug.Log("hit");
                 }
                 else
                 {
