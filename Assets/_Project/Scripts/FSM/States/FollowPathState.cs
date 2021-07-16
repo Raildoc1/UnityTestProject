@@ -53,7 +53,7 @@ namespace TestGame.FSM
             _agent.isStopped = false;
             _finishedMove = false;
             _finishedRotate = false;
-    }
+        }
 
         public override void Update()
         {

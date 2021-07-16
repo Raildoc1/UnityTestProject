@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TestGame.Enemy;
+﻿using TestGame.Enemy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,6 +44,10 @@ namespace TestGame.View
         private void OnHealthChanged(int current, int max)
         {
             _fillImage.fillAmount = current / (float)max;
+            if (current == 0)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ namespace TestGame.Enemy
 
         [SerializeField] private int _maxHealth = 100;
 
+        public bool IsDead => Health == 0;
+
         public int Health
         {
             get => _health;
@@ -48,7 +50,16 @@ namespace TestGame.Enemy
 
         private void Die()
         {
-            gameObject.SetActive(false);
+            var animator = GetComponent<Animator>();
+
+            if (animator)
+            {
+                animator.enabled = false;
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }
